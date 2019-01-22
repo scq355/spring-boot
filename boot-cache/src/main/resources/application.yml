@@ -1,0 +1,23 @@
+spring:
+  aop:
+    proxy-target-class: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/boot?serverTimezone=Hongkong&characterEncoding=utf8&useUnicode=true&useSSL=false
+    username: root
+    password: scq355
+  redis:
+    host: 192.168.192.128
+    port: 6379
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+logging:
+  level:
+    com:
+      wowjoy:
+        boot:
+          cache: debug
+info:
+  app:
+    id: cache
+    version: 1.0.0-SNAPSHOT

@@ -1,0 +1,23 @@
+CREATE TABLE IF NOT EXISTS department (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  departmentName VARCHAR(255) NULL
+) CHARSET = utf8;
+
+CREATE TABLE IF NOT EXISTS employee (
+  id       INT PRIMARY KEY AUTO_INCREMENT,
+  lastName VARCHAR(255) NULL,
+  email    VARCHAR(255) NULL,
+  gender   INT(2)       NULL,
+  d_id     INT          NULL
+) CHARSET = utf8;
+
+CREATE TABLE IF NOT EXISTS methodlock (
+  id          INT PRIMARY KEY AUTO_INCREMENT COMMENT '主键',
+  method_name VARCHAR(64) DEFAULT '' NOT NULL COMMENT '锁定的方法名',
+  description VARCHAR(1024) NOT NULL COMMENT '备注信息',
+  update_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT uidx_method_name
+  UNIQUE (method_name)
+) CHARSET = utf8;
+
+
