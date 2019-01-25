@@ -1,0 +1,43 @@
+apply plugin: "maven-publish"
+
+archivesBaseName = 'service'
+
+version = '0.0.1-SNAPSHOT'
+
+dependencies {
+    compile("org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}")
+    compile("org.apache.httpcomponents:httpclient:4.5.2")
+    compile(group: 'mysql', name: 'mysql-connector-java', version: '5.1.38')
+    compile(group: 'com.oracle', name: 'ojdbc6', version: '11.2.0.3')
+    compile group: 'antlr', name: 'antlr', version: '2.7.7'
+
+}
+
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+    classifier "sources" //定义一个标志 (生成的jar包后面加上sources, 如: jlib-2.2.11-sources.jar)
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            //打包源码和class
+            from components.java    //发布java组件
+
+            //定义源码task
+            artifact sourceJar
+
+            //定义包的坐标:
+            groupId 'cn.com.jcgroup.planb'
+            artifactId 'service'
+            version '0.0.1-SNAPSHOT'
+        }
+    }
+
+    //定义目标仓库 (包所存放的地方)
+    repositories {
+        //发布到本地maven仓库 (~/.m2/repository)
+        mavenLocal()
+    }
+}

@@ -1,0 +1,36 @@
+// 所有子项目的通用配置
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'groovy'
+    apply plugin: 'idea'
+
+    //定义版本号
+    ext {
+        springBootVersion = '1.5.3.RELEASE'
+    }
+
+    // JVM 版本号要求
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    // java编译的时候缺省状态下会因为中文字符而失败
+    [compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
+
+    repositories {
+        mavenLocal()
+        maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+        mavenCentral()
+        jcenter()
+    }
+
+    dependencies {
+        // 通用依赖
+        compile("org.projectlombok:lombok:1.16.12")
+        compile("com.alibaba:fastjson:1.2.12")
+        compile("org.slf4j:slf4j-api:1.7.2")
+        compile("joda-time:joda-time:2.9.7")
+        compile("org.codehaus.groovy:groovy-all:2.4.7")
+        compile("org.apache.commons:commons-lang3:3.5")
+    }
+
+}

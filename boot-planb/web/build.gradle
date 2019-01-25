@@ -1,0 +1,38 @@
+buildscript {
+    repositories {
+        maven {
+            url "http://maven.aliyun.com/nexus/content/groups/public"
+        }
+    }
+    ext {
+        springBootVersion = '1.5.3.RELEASE'
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'org.springframework.boot'
+
+
+sourceSets {
+    main {
+        groovy {
+            srcDir "src/main/java"
+        }
+    }
+}
+
+version = '0.0.1-SNAPSHOT'
+
+archivesBaseName = 'web'
+
+dependencies {
+    //依赖service模块
+    compile project(":service")
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-aop:${springBootVersion}")
+    testCompile("org.springframework.boot:spring-boot-starter-test:${springBootVersion}")
+}
+
+
