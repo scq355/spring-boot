@@ -338,3 +338,181 @@ CompletableFuture<User> findOneByFirstname(String firstname);
 ListenableFuture<User> findOneByLastname(String lastname);  
 ```
 
+创建Repository实例：
+
+XML启用SpringDataRepository
+```java
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.springframework.org/schema/data/jpa"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/data/jpa
+    http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
+
+  <repositories base-package="com.acme.repositories" />
+
+</beans:beans>
+```
+
+使用exclude-filter元素：
+```java
+<repositories base-package="com.acme.repositories">
+  <context:exclude-filter type="regex" expression=".*SomeRepository" />
+</repositories>
+```
+
+Java配置
+```java
+@Configuration
+@EnableJpaRepositories("com.acme.repositories")
+class ApplicationConfiguration {
+
+  @Bean
+  EntityManagerFactory entityManagerFactory() {
+    // …
+  }
+}
+```
+
+SpringDataRepository自定义实现：
+
+```java
+interface CustomizedUserRepository {
+  void someCustomMethod(User user);
+}
+
+class CustomizedUserRepositoryImpl implements CustomizedUserRepository {
+  public void someCustomMethod(User user) {
+    // Your custom implementation
+  }
+}
+```
+与接口对应的类名最重要的部分是Impl后缀，实现本身不依赖于Spring Data，可以是常规的Spring bean
+
+可以让`repository`接口扩展片段接口，如以下示例所示：
+
+```java
+interface UserRepository extends CrudRepository<User, Long>, CustomizedUserRepository {
+
+  // Declare query methods here
+}
+```
+
+```java
+interface HumanRepository {
+  void someHumanMethod(User user);
+}
+
+class HumanRepositoryImpl implements HumanRepository {
+
+  public void someHumanMethod(User user) {
+    // Your custom implementation
+  }
+}
+
+interface ContactRepository {
+
+  void someContactMethod(User user);
+  User anotherContactMethod(User user);
+}
+
+class ContactRepositoryImpl implements ContactRepository {
+
+  public void someContactMethod(User user) {
+    // Your custom implementation
+  }
+
+  public User anotherContactMethod(User user) {
+    // Your custom implementation
+  }
+}
+```
+
+扩展CrudRepository的自定义Repository的接口
+```java
+interface UserRepository extends CrudRepository<User, Long>, HumanRepository, ContactRepository {
+
+  // Declare query methods here
+}
+```
+
+自定义存储库接口
+```java
+interface CustomizedSave<T> {
+  <S extends T> S save(S entity);
+}
+
+class CustomizedSaveImpl<T> implements CustomizedSave<T> {
+
+  public <S extends T> S save(S entity) {
+    // Your custom implementation
+  }
+}
+
+interface UserRepository extends CrudRepository<User, Long>, CustomizedSave<User> {
+}
+
+interface PersonRepository extends CrudRepository<Person, Long>, CustomizedSave<Person> {
+}
+```
+
+使用默认后缀的Repository和为后缀设置自定义值的Repository：
+```xml
+<!-- 尝试查找名为com.acme.repository.CustomizedUserRepositoryImpl的类。 -->
+<repositories base-package="com.acme.repository" />
+<!--尝试查找com.acme.repository.CustomizedUserRepositoryMyPostfix-->
+<repositories base-package="com.acme.repository" repository-impl-postfix="MyPostfix" />
+```
+
+解决歧义
+
+```java
+package com.acme.impl.one;
+
+class CustomizedUserRepositoryImpl implements CustomizedUserRepository {
+
+  // Your custom implementation
+}
+```
+
+```java
+package com.acme.impl.two;
+
+@Component("specialCustomImpl")
+class CustomizedUserRepositoryImpl implements CustomizedUserRepository {
+
+  // Your custom implementation
+}
+```
+
+手动连接自定义实现
+
+```xml
+<repositories base-package="com.acme.repository" />
+
+<beans:bean id="userRepositoryImpl" class="…">
+  <!-- further configuration -->
+</beans:bean>
+```
+
+自定义Base Repository：
+```java
+class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T, ID> {
+
+  private final EntityManager entityManager;
+
+  MyRepositoryImpl(JpaEntityInformation entityInformation, EntityManager entityManager) {
+    super(entityInformation, entityManager);
+
+    // Keep the EntityManager around to used from the newly introduced methods.
+    this.entityManager = entityManager;
+  }
+
+  @Transactional
+  public <S extends T> S save(S entity) {
+    // implementation goes here
+  }
+}
+```
