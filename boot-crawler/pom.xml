@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.canagler.p2p</groupId>
-	<artifactId>crawler</artifactId>
+	<artifactId>boot-crawler</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>crawler</name>
+	<name>boot-crawler</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
