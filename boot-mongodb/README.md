@@ -516,3 +516,131 @@ class MyRepositoryImpl<T, ID extends Serializable> extends SimpleJpaRepository<T
   }
 }
 ```
+
+从Aggregate Roots发布事件：
+
+每次调用Spring Data存储库的save（...）方法之一时，都会调用这些方法。
+```java
+class AnAggregateRoot {
+    // 返回单个事件实例或事件集合，它不能采取任何论点
+    @DomainEvents 
+    Collection<Object> domainEvents() {
+        // … return events you want to get published here
+    }
+    // 可用于潜在地清除要发布的事件列表（以及其他用途）
+    @AfterDomainEventPublication 
+    void callbackMethod() {
+       // … potentially clean up domain events list
+    }
+}
+```
+Spring Data 扩展
+
+Querydsl扩展:
+
+Querydsl：一个框架，可以通过其流畅的API构建静态类型的SQL类查询
+
+```java
+public interface QuerydslPredicateExecutor<T> {
+
+  Optional<T> findById(Predicate predicate);  
+
+  Iterable<T> findAll(Predicate predicate);   
+
+  long count(Predicate predicate);            
+
+  boolean exists(Predicate predicate);        
+
+  // … more functionality omitted.
+}
+```
+
+要使用Querydsl支持，需在存储库接口上扩展QuerydslPredicateExecutor接口：
+```java
+interface UserRepository extends CrudRepository<User, Long>, QuerydslPredicateExecutor<User> {
+}
+```
+```java
+Predicate predicate = user.firstname.equalsIgnoreCase("dave")
+	.and(user.lastname.startsWithIgnoreCase("mathews"));
+
+userRepository.findAll(predicate);
+```
+
+Web 支持：
+
+Java代码配置：
+
+```java
+@Configuration
+@EnableWebMvc
+@EnableSpringDataWebSupport
+class WebConfiguration {}
+```
+
+XML配置：
+
+将`SpringDataWebConfiguration`或`HateoasAwareSpringDataWebConfiguration`注册为Spring Bean
+
+```xml
+<bean class="org.springframework.data.web.config.SpringDataWebConfiguration" />
+
+<!-- If you use Spring HATEOAS, register this one *instead* of the former -->
+<bean class="org.springframework.data.web.config.HateoasAwareSpringDataWebConfiguration" />
+```
+
+基本Web支持：
+
+- `DomainClassConverter`让Spring MVC从请求参数或路径变量中解析repository-managed的类的实例
+
+```java
+@Controller
+@RequestMapping("/users")
+class UserController {
+
+  @RequestMapping("/{id}")
+  String showUserForm(@PathVariable("id") User user, Model model) {
+
+    model.addAttribute("user", user);
+    return "userForm";
+  }
+}
+```
+该方法直接接收User实例，无需进一步查找。通过让Spring MVC首先将路径变量转换为域类的id类型来解析实例，并最终通过在为域类型注册的存储库实例上调用`findById（...）`来访问实例。
+
+Repository必须实现CrudRepository才有资格被发现进行转换
+
+- `HandlerMethodArgumentResolver`实现让Spring MVC从请求参数中解析Pageable和Sort实例
+
+```java
+@Controller
+@RequestMapping("/users")
+class UserController {
+
+  private final UserRepository repository;
+
+  UserController(UserRepository repository) {
+    this.repository = repository;
+  }
+
+  @RequestMapping
+  String showUsers(Model model, Pageable pageable) {
+
+    model.addAttribute("users", repository.findAll(pageable));
+    return "users";
+  }
+}
+```
+Spring MVC尝试使用以下默认配置从请求参数派生Pageable实例：
+- page：检索的页面，0索引，默认为0
+- size：要检索的页面大小，默认为20
+- sort：在格式property，property（，ASC|DESC）中排序的属性，默认排序方向是升序，如果切换排序方式，可使用多个排序参数：`?sort=firstname&sort=lastname,asc`
+
+要自定义，可分别注册实现`PageableHandlerMethodArgumentResolverCustomizer`接口或`SortHandlerMethodArgumentResolverCustomizer`接口,实现customize()方法：
+
+```java
+@Bean 
+SortHandlerMethodArgumentResolverCustomizer sortCustomizer() {
+    return s -> s.setPropertyDelimiter("<-->");
+}
+```
