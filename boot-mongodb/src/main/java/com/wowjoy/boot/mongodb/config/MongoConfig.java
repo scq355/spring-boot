@@ -11,11 +11,17 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoTypeMapper;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @author scq
  */
 @Configuration
+@EnableMongoRepositories
 public class MongoConfig extends AbstractMongoConfiguration {
 
     /**
@@ -65,6 +71,13 @@ public class MongoConfig extends AbstractMongoConfiguration {
         return "github_db";
     }
 
+
+    @Override
+    protected Collection<String> getMappingBasePackages() {
+        List<String> basepackage = new ArrayList<>();
+        basepackage.add("com.wowjoy.boot.mongodb.repository");
+        return basepackage;
+    }
 
     @Bean
     @Override
