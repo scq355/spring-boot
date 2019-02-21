@@ -9,3 +9,4 @@
 ### boot-planb
 ### boot-seaurity
 ### boot-task
+### boot-mybatis-generator
