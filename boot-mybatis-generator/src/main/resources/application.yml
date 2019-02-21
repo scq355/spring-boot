@@ -1,16 +1,25 @@
+server:
+  port: 80
+# mysql
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/mybatis_generator?useUnicode=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/mybatis_generator?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC
     username: root
     password: scq355
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
-    resources:
-      static-locations: classpath:/static/,classpath:/views/
+  resources:
+    static-locations: classpath:/static/,classpath:/views/
 
 mybatis:
   mapperLocations: classpath:mapper/**/*.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+pagehelper:
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+database:
+  name: mysql
