@@ -27,9 +27,11 @@ import java.util.zip.ZipOutputStream;
 public class GenUtils {
 
     public static List<String> getTemplates(){
-        List<String> templates = new ArrayList<String>();
+        List<String> templates = new ArrayList<>();
         templates.add("template/Entity.java.vm");
         templates.add("template/Dao.xml.vm");
+        templates.add("template/Mapper.java.vm");
+        templates.add("template/Service.java.vm");
         return templates;
     }
 
@@ -37,7 +39,8 @@ public class GenUtils {
      * 生成代码
      */
     public static void generatorCode(Map<String, String> table,
-                                     List<Map<String, String>> columns, ZipOutputStream zip) {
+                                     List<Map<String, String>> columns,
+                                     ZipOutputStream zip) {
         //配置信息
         Configuration config = getConfig();
         boolean hasBigDecimal = false;
@@ -89,7 +92,7 @@ public class GenUtils {
         prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader" );
         Velocity.init(prop);
         String mainPath = config.getString("mainPath" );
-        mainPath = StringUtils.isBlank(mainPath) ? "io.renren" : mainPath;
+        mainPath = StringUtils.isBlank(mainPath) ? "wowjoy" : mainPath;
         //封装模板数据
         Map<String, Object> map = new HashMap<>();
         map.put("tableName", tableEntity.getTableName());
@@ -170,38 +173,16 @@ public class GenUtils {
             return packagePath + "entity" + File.separator + className + "Entity.java";
         }
 
-        if (template.contains("Dao.java.vm" )) {
-            return packagePath + "dao" + File.separator + className + "Dao.java";
+        if (template.contains("Mapper.java.vm" )) {
+            return packagePath + "dao" + File.separator + className + "Mapper.java";
         }
 
         if (template.contains("Service.java.vm" )) {
             return packagePath + "service" + File.separator + className + "Service.java";
         }
 
-        if (template.contains("ServiceImpl.java.vm" )) {
-            return packagePath + "service" + File.separator + "impl" + File.separator + className + "ServiceImpl.java";
-        }
-
-        if (template.contains("Controller.java.vm" )) {
-            return packagePath + "controller" + File.separator + className + "Controller.java";
-        }
-
         if (template.contains("Dao.xml.vm" )) {
             return "main" + File.separator + "resources" + File.separator + "mapper" + File.separator + moduleName + File.separator + className + "Dao.xml";
-        }
-
-        if (template.contains("menu.sql.vm" )) {
-            return className.toLowerCase() + "_menu.sql";
-        }
-
-        if (template.contains("index.vue.vm" )) {
-            return "main" + File.separator + "resources" + File.separator + "src" + File.separator + "views" + File.separator + "modules" +
-                    File.separator + moduleName + File.separator + className.toLowerCase() + ".vue";
-        }
-
-        if (template.contains("add-or-update.vue.vm" )) {
-            return "main" + File.separator + "resources" + File.separator + "src" + File.separator + "views" + File.separator + "modules" +
-                    File.separator + moduleName + File.separator + className.toLowerCase() + "-add-or-update.vue";
         }
 
         return null;

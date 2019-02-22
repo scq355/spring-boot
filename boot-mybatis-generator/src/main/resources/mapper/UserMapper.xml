@@ -1,51 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="${classname}Dao">
-    <resultMap id="${classname}" type="${package}.model.${className}">
-        #foreach($column in $columns)
-            <result property="${column.attrname}" column="${column.columnName}"/>
-        #end
+<mapper namespace="com.wowjoy.dao.UserMapper">
+    <resultMap id="user" type="com.wowjoy.entity.User">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <result property="email" column="email"/>
     </resultMap>
 
     <sql id="sql_insert_column_list">
         <trim prefix="" prefixOverrides=",">
-            #foreach($column in $columns)
-                <if test="entity.${column.attrname} != null">,${column.columnName}</if>
-            #end
+            <if test="entity.id != null">,id</if>
+            <if test="entity.name != null">,name</if>
+            <if test="entity.age != null">,age</if>
+            <if test="entity.email != null">,email</if>
         </trim>
     </sql>
 
     <sql id="sql_insert_property_list">
         <trim prefix="" prefixOverrides=",">
-            #foreach($column in $columns)
-                <if test="entity.${column.attrname} != null">,#{entity.${column.attrname}}</if>
-            #end
+            <if test="entity.id != null">,#{entity.id}</if>
+            <if test="entity.name != null">,#{entity.name}</if>
+            <if test="entity.age != null">,#{entity.age}</if>
+            <if test="entity.email != null">,#{entity.email}</if>
         </trim>
     </sql>
 
     <sql id="sql_column_list">
-        #foreach($column in $columns)
-        #if($column.columnName != 'id'),#end${column.columnName}
-    #end
-    </sql>
+                id
+            ,name
+            ,age
+            ,email
+        </sql>
 
     <sql id="sql_update_set">
         <trim prefix="SET" prefixOverrides=",">
             <if test="entity != null">
-                #foreach($column in $columns)
-                    <choose>
-                        <when test="entity.${column.columnName} != null and entity.${column.columnName} != ''">,${column.attrname} = #{entity.${column.columnName}}</when>
-                    </choose>
-                #end
+                <choose>
+                    <when test="entity.id != null and entity.id != ''">,id = #{entity.id}</when>
+                </choose>
+                <choose>
+                    <when test="entity.name != null and entity.name != ''">,name = #{entity.name}</when>
+                </choose>
+                <choose>
+                    <when test="entity.age != null and entity.age != ''">,age = #{entity.age}</when>
+                </choose>
+                <choose>
+                    <when test="entity.email != null and entity.email != ''">,email = #{entity.email}</when>
+                </choose>
             </if>
         </trim>
     </sql>
 
     <sql id="sql_condition">
         <if test="condition != null">
-            #foreach($column in $columns)
-                <if test="condition.${column.attrname} != null">AND ${column.columnName} = #{condition.${column.attrname}}</if>
-            #end
+            <if test="condition.id != null">AND id = #{condition.id}</if>
+            <if test="condition.name != null">AND name = #{condition.name}</if>
+            <if test="condition.age != null">AND age = #{condition.age}</if>
+            <if test="condition.email != null">AND email = #{condition.email}</if>
         </if>
     </sql>
 
@@ -58,10 +70,10 @@
     </sql>
 
     <insert id="insert" parameterType="java.util.Map">
-        <selectKey keyProperty="entity.id" resultType="java.lang.Integer" order="AFTER">
+        <selectKey keyProperty="entity.id" resultType="java.lang.String" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        INSERT INTO ${tableName} (
+        INSERT INTO user (
         <include refid="sql_insert_column_list"/>
         )
         VALUES (
@@ -69,47 +81,47 @@
         )
     </insert>
 
-    <select id="get" parameterType="java.util.Map" resultMap="${classname}">
+    <select id="get" parameterType="java.util.Map" resultMap="user">
         SELECT <include refid="sql_column_list"/>
-        FROM ${tableName}
+        FROM user
         <trim prefix="WHERE" prefixOverrides="AND">
             <include refid="sql_condition"/>
         </trim>
     </select>
 
-    <select id="getById" parameterType="java.util.Map" resultMap="${classname}">
+    <select id="getById" parameterType="java.util.Map" resultMap="user">
         SELECT <include refid="sql_column_list"/>
-        FROM ${tableName}
+        FROM user
         WHERE id = #{id}
     </select>
 
-    <select id="findInPage" parameterType="java.util.Map" resultMap="${classname}">
+    <select id="findInPage" parameterType="java.util.Map" resultMap="user">
         SELECT
         <include refid="sql_column_list"/>
-        FROM ${tableName}
+        FROM user
         <trim prefix="WHERE" prefixOverrides="AND">
             <include refid="sql_condition"/>
         </trim>
     </select>
 
-    <select id="find" parameterType="java.util.Map" resultMap="${classname}">
+    <select id="find" parameterType="java.util.Map" resultMap="user">
         SELECT
         <include refid="sql_column_list"/>
-        FROM ${tableName}
+        FROM user
         <trim prefix="WHERE" prefixOverrides="AND">
             <include refid="sql_condition"/>
         </trim>
     </select>
 
     <select id="count" parameterType="java.util.Map" resultType="java.lang.Integer">
-        SELECT count(${count_column}) AS count_ FROM ${tableName}
+        SELECT count(${count_column}) AS count_ FROM user
         <trim prefix="WHERE" prefixOverrides="AND">
             <include refid="sql_condition"/>
         </trim>
     </select>
 
     <update id="update" parameterType="java.util.Map">
-        UPDATE ${tableName}
+        UPDATE user
         <include refid="sql_update_set"/>
         <trim prefix="WHERE" prefixOverrides="AND">
             <include refid="sql_condition"/>
@@ -117,20 +129,20 @@
     </update>
 
     <update id="updateById" parameterType="java.util.Map">
-        UPDATE ${tableName}
+        UPDATE user
         <include refid="sql_update_set"/>
         WHERE id = #{id}
     </update>
 
     <delete id="remove" parameterType="java.util.Map">
-        DELETE FROM ${tableName}
+        DELETE FROM user
         <trim prefix="WHERE" prefixOverrides="AND">
             <include refid="sql_condition"/>
         </trim>
     </delete>
 
     <delete id="removeById" parameterType="java.util.Map">
-        DELETE FROM ${tableName}
+        DELETE FROM user
         WHERE id = #{id}
     </delete>
 </mapper>

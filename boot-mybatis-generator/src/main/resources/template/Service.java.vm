@@ -1,0 +1,63 @@
+package ${package}.${moduleName}.service;
+
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Service
+public class ${className}Service {
+
+    @Autowired
+    private ${className}Mapper ${classname}Mapper;
+
+    public int insert(${className} ${classname}) {
+        return ${classname}Mapper.insert(${classname});
+    }
+
+    public ${className} get(${className} ${classname}) {
+        return ${classname}Mapper.get(${classname});
+    }
+
+    public ${className} getById(String id) {
+        return ${classname}Mapper.getById(id);
+    }
+
+    public List<${className}> find(${className} ${classname}) {
+        return ${classname}Mapper.find(${classname});
+    }
+
+    public List<${className}> findInPage(${className} ${classname},
+                                  Integer offset,
+                                  Integer limit,
+                                  String orderBy) {
+        return ${classname}Mapper.findInPage(${classname}, offset, limit, orderBy);
+    }
+
+    public int count(${className} ${classname}) {
+        return ${classname}Mapper.count(${classname});
+    }
+
+    public int update(${className} entity, ${className} condition) {
+        return ${classname}Mapper.update(entity, condition);
+    }
+
+    public int update(${className} entity, String id) {
+        return ${classname}Mapper.updateById(entity, id);
+    }
+
+    public int remove(${className} ${classname}) {
+        return ${classname}Mapper.remove(${classname});
+    }
+
+    public int removeById(String id) {
+        return ${classname}Mapper.removeById(id);
+    }
+}

@@ -1,0 +1,37 @@
+package ${package}.${moduleName}.mapper;
+
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+/**
+ * ${comments}
+ *
+ * @author ${author}
+ * @email ${email}
+ * @date ${datetime}
+ */
+@Mapper
+public interface ${className}Mapper {
+
+    int insert(@Param("entity") ${className} ${classname});
+
+    ${className} get(@Param("${classname}") ${className} ${classname});
+    ${className} getById(@Param("id") String id);
+
+    List<${className}> find(@Param("condition") ${className} ${classname});
+    List<${className}> findInPage(@Param("condition") ${className} ${classname},
+                                  @Param("offset") Integer offset,
+                                  @Param("limit") Integer limit,
+                                  @Param("orderBy") String orderBy);
+
+    int count(@Param("${classname}") ${className} ${classname});
+
+    int update(@Param("condition") ${className} condition, @Param("entity") ${className} entity);
+    int updateById(@Param("entity") ${className} entity, @Param("id") String id);
+
+
+    int remove(@Param("condition") ${className} ${classname});
+    int removeById(@Param("id") String id);
+}
