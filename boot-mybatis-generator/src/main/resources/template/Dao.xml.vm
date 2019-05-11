@@ -34,7 +34,7 @@
             <if test="entity != null">
                 #foreach($column in $columns)
                     <choose>
-                        <when test="entity.${column.columnName} != null and entity.${column.columnName} != ''">,${column.attrname} = #{entity.${column.columnName}}</when>
+                        <when test="entity.${column.attrname} != null and entity.${column.attrname} != ''">,${column.columnName} = #{entity.${column.attrname}}</when>
                     </choose>
                 #end
             </if>
