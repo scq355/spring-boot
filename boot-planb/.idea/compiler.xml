@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="planb-web.admin.main" target="1.8" />
+      <module name="planb-web.admin.test" target="1.8" />
+      <module name="planb-web.service.main" target="1.8" />
+      <module name="planb-web.service.test" target="1.8" />
+      <module name="planb-web.web.main" target="1.8" />
+      <module name="planb-web.web.test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

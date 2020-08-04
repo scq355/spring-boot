@@ -1,0 +1,14 @@
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/handler/RExceptionHandler.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/utils/DateUtils.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/common/RException.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/config/DbConfig.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/dao/GeneratorDao.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/entity/TableEntity.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/entity/ColumnEntity.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/common/Result.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/utils/PageUtils.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/utils/GenUtils.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/service/SysGeneratorService.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/MyBatisGeneratorApplication.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/common/Query.java
+/Users/lion_scq/workspaces/spring-boot/boot-mybatis-generator/src/main/java/com/wowjoy/controller/SysGeneratorController.java

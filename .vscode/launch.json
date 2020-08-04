@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - AdminApplication",
+            "request": "launch",
+            "mainClass": "cn.com.jcgroup.AdminApplication",
+            "projectName": "admin"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - BootTaskApplication",
+            "request": "launch",
+            "mainClass": "com.wowjoy.boot.task.BootTaskApplication"
+        }
+    ]
+}
