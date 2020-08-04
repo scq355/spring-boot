@@ -10,3 +10,4 @@
 ### boot-seaurity
 ### boot-task
 ### boot-mybatis-generator
+### boot-shiro
